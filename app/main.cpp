@@ -16,7 +16,7 @@
 #include "example.h"
 #include "vector.hh"
 #include "matrix.hh"
-#include "../include/lacze_do_gnuplota.hh"
+#include "../inc/lacze_do_gnuplota.hh"
 
 /*!
  * Simple main program that demontrates how access
