@@ -35,6 +35,21 @@ include(Warnings)
 find_lto(CXX)
 
 # --------------------------------------------------------------------------------
+#                          Compile Geometric Libraries 
+# --------------------------------------------------------------------------------
+add_library(VEC ./inc/Vector.h ./src/empty.cpp)
+target_include_directories(VEC PUBLIC ./inc ./src)
+
+add_library(MAT ./inc/Matrix.h ./src/empty.cpp)
+target_link_libraries(MAT VEC)
+target_include_directories(MAT PUBLIC ./inc ./src)
+
+add_library(FIG ./inc/Figure.h ./src/empty.cpp)
+target_link_libraries(FIG MAT VEC)
+target_include_directories(FIG PUBLIC ./inc ./src)
+
+
+# --------------------------------------------------------------------------------
 #                         Locate files (change as needed).
 # --------------------------------------------------------------------------------
 set(SOURCES          # All .cpp files in src/
