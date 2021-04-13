@@ -65,17 +65,19 @@ class Figure {
     virtual Vector<Tf> operator[](const std::size_t &index) const {
         return (*this->points)[index];
     }
-
-    /**
-     * @brief 
-     * @param cin 
-     * @param figure 
-     * @return std::istream& 
-     */
-    friend std::istream &operator>>(std::istream &cin, Figure &figure);
-
-    friend std::ostream &operator<<(std::ostream &cout, const Figure &figure);
 };
+
+/**
+ * @brief 
+ * @param cin 
+ * @param figure 
+ * @return std::istream& 
+ */
+template <typename Tf>
+std::istream &operator>>(std::istream &cin, Figure<Tf> &figure);
+
+template <typename Tf>
+std::ostream &operator<<(std::ostream &cout, const Figure<Tf> &figure);
 
 /**
  * @brief Rectangle Figure. It has 4 Points and constructos checking if is Rectangle
@@ -99,8 +101,9 @@ class Rectangle : public Figure<Tf> {
      * @param b Length of second side
      */
     Rectangle(const Tf &a, const Tf &b);
-
-    friend std::istream &operator>>(std::istream &cin, Rectangle &figure);
 };
+
+template <typename Tf>
+std::istream &operator>>(std::istream &cin, Rectangle<Tf> &figure);
 
 #include "Figure.cpp"

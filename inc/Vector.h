@@ -12,14 +12,14 @@ private:
      * @brief Values of sent type.
     * @return Pointer to table of variables.
     */
-    Tf *value = nullptr;
+    Tf *value;
 
     /**
      * @brief Size of Vector.
     */
-    std::size_t dim = 0;
+    std::size_t dim;
 
-   public:
+public:
     /**
      * @brief Construct a new empty Vector.
     */
@@ -38,6 +38,10 @@ private:
     template <typename... T>
     Vector(const Tf &first, const T... args);
 
+    /**
+     * @brief Construct a new Vector object make 1x1 Vector
+     * @param first value inside the Vector
+     */
     Vector(const Tf &first);
     
     /**

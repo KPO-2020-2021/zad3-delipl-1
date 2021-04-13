@@ -10,6 +10,8 @@ Figure<Tf>::Figure(const std::string &name, const Vector<Tf> &first, const Tv...
 }
 template <typename Tf>
 Figure<Tf>::Figure() {
+    this->name = "";
+    this->points = nullptr;
 }
 
 template <typename Tf>
@@ -24,7 +26,7 @@ template <typename Tf>
 void Figure<Tf>::Rotate(const double &angle, const Vector<Tf> &v) {
     Matrix<double> M(Vector(cos(angle), -sin(angle)),
                      Vector(sin(angle), cos(angle)));
-    for (int i = 0; i < this->CountPoints(); i++) {
+    for (std::size_t i = 0; i < this->CountPoints(); i++) {
         Vector u = (*this->points)[i];
         u = u - v;
         Vector w = M * u;
@@ -39,13 +41,13 @@ template <typename Tf>
 std::ostream &operator<<(std::ostream &cout, Figure<Tf> &figure) {
     char c = 'A';
     cout << figure.Name() << ": ";
-    for (int i = 0; i < figure.CountPoints()-1; i++) {
+    for (std::size_t i = 0; i < figure.CountPoints()-1; i++) {
         Vector<Tf> v(figure[i] - figure[i + 1]);
         cout << "(" << v.Length() << ") ";
     }
     Vector<Tf> v(figure[figure.CountPoints()-1] - figure[0]);
     cout << "(" << v.Length() << ") ";
-    for (int i = 0; i < figure.CountPoints(); i++) {
+    for (std::size_t i = 0; i < figure.CountPoints(); i++) {
         cout << c << " = " << figure[i] << " ";
         c++;
     }
@@ -54,7 +56,7 @@ std::ostream &operator<<(std::ostream &cout, Figure<Tf> &figure) {
 
 template <typename Tf>
 std::istream &operator>>(std::istream &cin, Figure<Tf> &figure) {
-    for (int i = 0; i < figure.CountPoints(); i++) {
+    for (std::size_t i = 0; i < figure.CountPoints(); i++) {
         cin >> (*figure.points)[i];
         if (!cin)
             throw std::logic_error("Can't read Rectangle");

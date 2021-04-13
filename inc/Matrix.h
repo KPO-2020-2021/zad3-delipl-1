@@ -12,19 +12,19 @@ class Matrix {
     /**
      * @brief Rows of Matrix.
      */
-    std::size_t n = 0;
+    std::size_t n;
 
     /**
      * @brief Columns of Matrix;
      */
-    std::size_t m = 0;
+    std::size_t m;
 
     /**
      * @brief Table of rows in Matrix. Vector of Vectors.
      */
-    Vector<Vector<Tf>> *vector = nullptr;
+    Vector<Vector<Tf>> *vector;
 
-   public:
+public:
     /**
      * @brief Construct a new Matrix object
      */
@@ -110,14 +110,14 @@ class Matrix {
  * @return Vector<Tf> result of Cross product.
  */
 template <typename Tf>
-Vector<Tf> operator&(const Vector<Tf> &v, const Vector<Tf> &u) const;
+Vector<Tf> operator&(const Vector<Tf> &v, const Vector<Tf> &u);
 
 /**
  * @brief Input stream operator
  * @return std::istream& cin with 
  */
 template <typename Tf>
-std::ostream &operator<<(std::ostream &cout, const Matrix &M);
+std::ostream &operator<<(std::ostream &cout, const Matrix<Tf> &M);
 
 // template <typename Tf>
 // std::istream &operator>>(std::istream &cin, Matrix &M);
