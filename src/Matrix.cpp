@@ -61,17 +61,25 @@ Tf Matrix<Tf>::operator()(const std::size_t &n, const std::size_t &m) const {
 }
 
 template <class Tf>
-Vector<Tf> &Matrix<Tf>::operator[](const std::size_t &index) const {
+Tf &Matrix<Tf>::operator()(const std::size_t &n, const std::size_t &m){
+    return ((*this->vector)[n])[m];
+}
+
+template <class Tf>
+Vector<Tf> Matrix<Tf>::operator[](const std::size_t &index) const {
+    return (*this->vector)[index];
+}
+
+template <class Tf>
+Vector<Tf> &Matrix<Tf>::operator[](const std::size_t &index){
     return (*this->vector)[index];
 }
 
 template <class Tf>
 Vector<Tf> Matrix<Tf>::operator*(const Vector<Tf> &v) const {
-    Vector<Tf> u;
-    Tf x;
+    Vector u(v);
     for (std::size_t i = 0; i < this->m; i++) {
-        x = (*this->vector)[i] * v;
-        u.Put(x);
+        u[i] = (*this)[i] * v;
     }
     return u;
 }

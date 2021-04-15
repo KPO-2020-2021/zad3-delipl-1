@@ -2,6 +2,8 @@
 
 #include "Vector.h"
 #include "Matrix.h"
+#include "GnuPlotApi.hh"
+#include <fstream>
 
 /**
  * @brief Geomethric Figure with endless points and name.
@@ -30,6 +32,9 @@ class Figure {
     template <class... Tv>
     Figure(const std::string &name, const Vector<Tf> &first, const Tv... args);
 
+    /**
+     * @brief Construct a new Figure object
+     */
     Figure();
 
     /**
@@ -50,20 +55,44 @@ class Figure {
     std::size_t CountPoints() const { return this->points->N(); };
 
     /**
+     * @brief Return dimention pf figure
+     * @return std::size_t 
+     */
+    std::size_t Dimention() const { return this->points->M(); };
+
+    /**
      * @brief Rotate Figure around Vector ref.
      * @param angle to Rotate.
      * @param ref Point of Reference.
      * @return Figure rotated Figure;
      */
-    void Rotate(const double &angle, const Vector<Tf> &v = Vector(Tf(), Tf()));
+    virtual void Rotate(const double &angle, const Vector<Tf> &v = Vector(Tf(), Tf()));
 
     /**
-     * @brief Returns point.
+     * @brief Returns point to read.
      * @param index index of point. 
      * @return Vector<Tf> Point.
      */
-    virtual Vector<Tf> operator[](const std::size_t &index) const {
+    Vector<Tf> operator[](const std::size_t &index) const{
         return (*this->points)[index];
+    }
+    /**
+     * @brief Returns point to read and write.
+     * @param index index of point. 
+     * @return Vector<Tf> Point.
+     */
+    Vector<Tf> &operator[](const std::size_t &index){
+        return (*this->points)[index];
+    }
+
+
+    /**
+     * @brief Returns value from point n in dimention m
+     * @param n index of value nr of point
+     * @param m index of value nr of dimentions
+     */
+    virtual Tf operator()(const std::size_t &n, const std::size_t &m) const{
+        return (*this->points)(n, m);
     }
 };
 
@@ -105,5 +134,22 @@ class Rectangle : public Figure<Tf> {
 
 template <typename Tf>
 std::istream &operator>>(std::istream &cin, Rectangle<Tf> &figure);
+
+template <typename Tf>
+class GnuFigure : public Figure<Tf>, public PzG::LaczeDoGNUPlota{
+    private:
+        std::string fileName;
+        std::ofstream *tmpFile;
+    public:
+        GnuFigure();
+        template <class... Tv>
+        GnuFigure(const std::string &fileName, const Vector<Tf> &first, const Tv... args);
+        ~GnuFigure();
+        bool Save(const std::string &fileName);
+        bool Draw();
+        void Rotate(const double &angle, const Vector<Tf> &v = Vector(Tf(), Tf()));
+
+        void PGMtoDAT(const std::string &pgmFileName);
+};
 
 #include "Figure.cpp"

@@ -81,16 +81,14 @@ public:
     Tf Remove(const std::size_t index);
 
     /**
-     * @brief Insert value into Vector in index place and grow a Dim()
-     * @param index plate to instert value
-     * @param value to put into Vector
-     */
-    void Insert(const std::size_t &index, const Tf &value);
+     * @brief Acces to variables vector.
+    */
+    Tf operator[](const std::size_t &i) const;
 
     /**
      * @brief Acces to variables vector.
     */
-    Tf &operator[](const std::size_t &i) const;
+    Tf &operator[](const std::size_t &i);
 
     /**
      * @brief Compare two Vectors. Dimention and values

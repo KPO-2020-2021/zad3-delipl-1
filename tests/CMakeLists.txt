@@ -23,11 +23,6 @@ set_target_properties(ut-vector PROPERTIES
     CXX_EXTENSIONS NO
 )
 
-# add_test(
-#     # Use some per-module/project prefix so that it is easier to run only tests for this module
-#     NAME ${LIBRARY_NAME}.ut-vector
-#     COMMAND ut-vector ${TEST_RUNNER_PARAMS})
-
 #  -------------------------------------------------------------------------- 
 #                               TEST MATRIX CLASS                             
 #  -------------------------------------------------------------------------- 

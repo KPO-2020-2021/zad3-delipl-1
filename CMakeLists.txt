@@ -44,9 +44,14 @@ add_library(MAT ./inc/Matrix.h ./src/empty.cpp)
 target_link_libraries(MAT VEC)
 target_include_directories(MAT PUBLIC ./inc ./src)
 
+add_library(GNU ./inc/GnuPlotApi.hh ./src/GnuPlotApi.cpp)
+target_include_directories(GNU PUBLIC ./inc)
+
 add_library(FIG ./inc/Figure.h ./src/empty.cpp)
-target_link_libraries(FIG MAT VEC)
+target_link_libraries(FIG MAT VEC GNU)
 target_include_directories(FIG PUBLIC ./inc ./src)
+
+
 
 
 # --------------------------------------------------------------------------------
@@ -54,7 +59,7 @@ target_include_directories(FIG PUBLIC ./inc ./src)
 # --------------------------------------------------------------------------------
 set(SOURCES          # All .cpp files in src/
     src/example.cpp
-    src/lacze_do_gnuplota
+    src/GnuPlotApi.cpp
 )
 set(TESTFILES        # All .cpp files in tests/
     tests/main.cpp

@@ -28,9 +28,9 @@ Vector<Tf>::Vector(const Tf &first, const T... args) {
     this->dim = sizeof...(args) + 1;
     this->value = new Tf[this->dim];
     this->value[0] = first;
-        Tf tempTab[] = {args...};
-        for (std::size_t i = 1; i < this->dim; i++)
-            this->value[i] = tempTab[i - 1];
+    Tf tempTab[] = {args...};
+    for (std::size_t i = 1; i < this->dim; i++)
+        this->value[i] = tempTab[i - 1];
 }
 
 template <typename Tf>
@@ -87,27 +87,6 @@ Tf Vector<Tf>::Pop() {
 }
 
 template <typename Tf>
-void Vector<Tf>::Insert(const std::size_t &index,const Tf &value) {
-    if (index > this->dim)
-        throw std::out_of_range("Try to insert on index out of range");
-    Tf *ptr = this->value;
-    this->dim++;
-    this->value = new Tf[this->dim];
-    for (std::size_t i = 0; i < this->dim; i++){
-        if(i == index){
-            this->value[i] = Tf(value);
-        }
-        else if( i > index){
-            this->value[i] = Tf(ptr[i - 1]);
-        }
-        else {
-            this->value[i] = Tf(ptr[i]);
-        }
-    }
-    delete(ptr);
-}
-
-template <typename Tf>
 Tf Vector<Tf>::Remove(const std::size_t index){
     if(index >= this->dim)
         throw std::out_of_range("Try to remove on index out of range");
@@ -131,7 +110,14 @@ Tf Vector<Tf>::Remove(const std::size_t index){
 /*                                  OPERATORS                                 */
 /* -------------------------------------------------------------------------- */
 template <typename Tf>
-Tf &Vector<Tf>::operator[](const std::size_t &i) const {
+Tf Vector<Tf>::operator[](const std::size_t &i) const {
+    if (i >= this->dim)
+        throw std::out_of_range("Vector out of range");
+    return value[i];
+}
+template <typename Tf>
+
+Tf &Vector<Tf>::operator[](const std::size_t &i){
     if (i >= this->dim)
         throw std::out_of_range("Vector out of range");
     return value[i];

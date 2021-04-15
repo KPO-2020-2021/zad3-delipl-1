@@ -80,7 +80,7 @@ public:
     std::size_t M() const { return this->m; };
 
     /**
-     * @brief Acces function to values in Matrix.
+     * @brief Acces function to read values in Matrix.
      * @param n row number.
      * @param m column number.
      * @return Tf::type value in place (n, m).
@@ -88,11 +88,26 @@ public:
     Tf operator()(const std::size_t &n, const std::size_t &m) const;
 
     /**
-     * @brief Operator [] acces to row.
+     * @brief Acces function to read and write values in Matrix.
+     * @param n row number.
+     * @param m column number.
+     * @return Tf::type value in place (n, m).
+     */
+    Tf &operator()(const std::size_t &n, const std::size_t &m);
+
+    /**
+     * @brief Operator [] acces to read to row.
      * @param index of row.
      * @return Vector row in index;
      */
-    Vector<Tf> &operator[](const std::size_t &index) const;
+    Vector<Tf> operator[](const std::size_t &index) const;
+
+     /**
+     * @brief Operator [] acces ro read and write to row.
+     * @param index of row.
+     * @return Vector row in index;
+     */
+    Vector<Tf> &operator[](const std::size_t &index); 
 
     /**
      * @brief Multiplar operator Matrix by Vector.

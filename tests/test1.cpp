@@ -130,14 +130,14 @@ TEST_CASE("16. Vector Remove method") {
     CHECK(v == u);
     CHECK_THROWS(v.Remove(69));
 }
-TEST_CASE("17. Vector Insert method"){
-    Vector v(1, 3);
-    v.Insert(1, 2);
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 2);
-    CHECK(v[2] == 3);
-    CHECK_THROWS(v.Insert(5, 9));
-}
+// TEST_CASE("17. Vector Insert method"){
+//     Vector v(1, 3);
+//     v.Insert(1, 2);
+//     CHECK(v[0] == 1);
+//     CHECK(v[1] == 2);
+//     CHECK(v[2] == 3);
+//     CHECK_THROWS(v.Insert(5, 9));
+// }
 TEST_CASE("18. Vector remove Vector method") {
     Vector v(Vector (1, 3), Vector(2,3));
 

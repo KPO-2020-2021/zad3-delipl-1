@@ -345,7 +345,7 @@ namespace PzG {
   Polecenie += "\npause -1\n";
   string Komenda = "/usr/bin/echo \"";
   Komenda += Polecenie;
-  Komenda += "\" | gnuplot&";
+  Komenda += "\" | gnuplot -persist &";
 
   return PrzeslijDoGNUPlota(Polecenie.c_str());
  }
