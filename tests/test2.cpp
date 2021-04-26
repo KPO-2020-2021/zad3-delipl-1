@@ -42,10 +42,10 @@ TEST_CASE("6. Matrix check different Dim of Vectors"){
     Vector u(5, 3 ,4);
     CHECK_THROWS_AS(Matrix N(u, v), std::exception);
 }
-TEST_CASE("7. Matrix Det of 2x3"){
+TEST_CASE("7. Matrix CrossPrepare of 2x3"){
     Vector v(4, 4, 0);
     Vector u(6, 4, 0);
-    Vector x = Matrix(v, u).Det();
+    Vector x = Matrix(v, u).CrossPrepare();
     Vector w(0, 0, -8);
     CHECK(x == w);
 }
@@ -59,18 +59,18 @@ TEST_CASE("8. Matrix Vector of Vector Constructor"){
 // TEST_CASE("9. Matrix det of 3x3"){
 //     Matrix N(Vector(1, 0),
 //              Vector(0, 1));
-//     CHECK(N.Det(0) == 1);
+//     CHECK(N.CrossPrepare(0) == 1);
 //     Matrix M(Vector(1, 0, 1),
 //              Vector(0, 1, 0),
 //              Vector(1, 0, 1));
-//     CHECK(M.Det(0) == 1);
+//     CHECK(M.CrossPrepare(0) == 1);
 //     Matrix C(Vector(1, 2, 3),
 //              Vector(-1, -1, -1),
 //              Vector(2, 2, 2));
-//     CHECK(C.Det(0) == 0);
+//     CHECK(C.CrossPrepare(0) == 0);
 //     Matrix F(Vector(1, 2, 3, 4),
 //            Vector(4, 3, 2, 1),
 //            Vector(1, 2, 4, 3),
 //            Vector(4, 1, 3, 1));
-//     CHECK(F.Det(0) == -55);
+//     CHECK(F.CrossPrepare(0) == -55);
 // }

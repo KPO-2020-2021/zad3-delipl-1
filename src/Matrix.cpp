@@ -40,7 +40,7 @@ Matrix<Tf>::~Matrix() {
 /*                                   METHODS                                  */
 /* -------------------------------------------------------------------------- */
 template <class Tf>
-Vector<Tf> Matrix<Tf>::Det() const {
+Vector<Tf> Matrix<Tf>::CrossPrepare() const {
     if (this->n == 2 && this->m == 3) {
         Matrix M(Vector(1, 1, 1), (*this)[0], (*this)[1]);
         Tf a(M(1, 1) * M(2, 2) - M(1, 2) * M(2, 1));
@@ -92,7 +92,7 @@ Vector<Tf> operator&(const Vector<Tf> &v, const Vector<Tf> &u){
     Vector tempU(u);
 
     Matrix M(tempV, tempU);
-    return M.Det();
+    return M.CrossPrepare();
 }
 
 template <typename Tf>

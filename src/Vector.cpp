@@ -230,47 +230,20 @@ std::ostream &operator<<(std::ostream &cout, const Vector<Tf> &v) {
 template <typename Tf>
 std::istream &operator>>(std::istream &cin, Vector<Tf> &v) {
     char c;
-    enum State { open,
-                 type,
-                 comma,
-                 close };
-    State state = open;
-    Tf x;
-    while (state != close) {
-        switch (state) {
-            case open:
-                cin >> std::ws >> c;
-                if (!cin)
-                    throw std::logic_error("Vector input error");
-                if (c != '[')
-                    throw std::logic_error("Vector input error");
-                state = type;
-                break;
-            case type:
-                cin >> std::ws >> x;
-                if (!cin)
-                    throw std::logic_error("Vector input error");
-
-                v.Put(x);
-                state = comma;
-                break;
-            case comma:
-                cin >> std::ws >> c;
-                if (!cin)
-                    throw std::logic_error("Vector input error");
-                if (c == ']') {
-                    state = close;
-                    break;
-                }
-                if (c != ',')
-                    throw std::logic_error("Vector input error");
-                state = type;
-                break;
-
-            default:
-                throw std::logic_error("Vector input error");
-                break;
-        }
+    std::size_t i = 0;
+    while(i < v.Dim()){
+        cin >> c;
+        if (!cin)
+            return cin;
+        if(c == '\n' || c == EOF)
+            return cin;
+        cin.putback(c);
+        Tf x;
+        cin >> x;
+        if (!cin)
+            throw std::logic_error("Vector input error");
+        v[i] = x;
+        ++i;
     }
     return cin;
 }

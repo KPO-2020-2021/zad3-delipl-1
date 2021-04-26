@@ -14,9 +14,9 @@ TEST_CASE("2. Vector<Vector> table of Vectorrs"){
     Vector<Vector<int>> *v = new Vector(w, u);
     CHECK((*v)[0] == w);
 }
-TEST_CASE("69. Vector<Vector> 2 dim   constructor"){
-    Vector dupa(2);
-    CHECK(dupa.Dim() == 1);
+TEST_CASE("100. Vector<Vector> 2 dimention   constructor"){
+    Vector c(2);
+    CHECK(c.Dim() == 1);
     Vector v(5, 3);
     Vector u(9, 4);
     Vector w(v, u);
@@ -24,18 +24,19 @@ TEST_CASE("69. Vector<Vector> 2 dim   constructor"){
 }
 
 TEST_CASE("3. Vector 2 dim constructor with tab"){
-    Vector dupa(6, 9);
-    CHECK_THROWS(dupa[2] == 6);
+    Vector x(6, 9);
+    CHECK_THROWS(x[2] == 6);
+    CHECK_THROWS(x[-2] == 6);
 }
 TEST_CASE("4. Vector 2 dim constructor with tab"){
-    Vector dupa(6, 9);
+    Vector x(6, 9);
 
-    CHECK((dupa.Dim() == 2 && dupa[0] == 6 && dupa[1] == 9));
+    CHECK((x.Dim() == 2 && x[0] == 6 && x[1] == 9));
 }
 TEST_CASE("5. Vector 6 dim constructor with tab"){
-    Vector dupa(1, 2, 3, 4, 5, 6);
+    Vector x(1, 2, 3, 4, 5, 6);
 
-    CHECK(dupa.Dim() == 6);
+    CHECK(x.Dim() == 6);
 }
 TEST_CASE("8. Vector copy Constructor"){
     Vector v(5, -9, 3);

@@ -58,7 +58,7 @@ public:
      * @brief Determinate for Cross product.
      * @return Vector<Tf> Cross Product.
      */
-    Vector<Tf> Det() const;
+    Vector<Tf> CrossPrepare() const;
 
     /**
      * @brief Determinate of square Matrix
