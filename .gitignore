@@ -35,3 +35,5 @@
 # Build directory
 build/*
 .vscode/
+
+tmp/*
