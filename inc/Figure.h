@@ -15,7 +15,7 @@ class Figure {
     /**
      * @brief List of Points in Figure
      */
-    Matrix<Tf> *points;
+    Vector<Vector<Tf>> *points;
 
     /**
      * @brief Name of Figure
@@ -52,13 +52,14 @@ class Figure {
      * @brief Counts how many Points in Figure are.
      * @return std::size_t quantity of Points
      */
-    std::size_t CountPoints() const { return this->points->N(); };
+    std::size_t CountPoints() const;
+
 
     /**
      * @brief Return dimention pf figure
      * @return std::size_t 
      */
-    std::size_t Dimention() const { return this->points->M(); };
+    std::size_t Dimention() const;
 
     /**
      * @brief Rotate Figure around Vector ref.
@@ -67,6 +68,12 @@ class Figure {
      * @return Figure rotated Figure;
      */
     virtual void Rotate(const double &angle, const std::size_t &x = 1,const Vector<Tf> &v = Vector(Tf(), Tf()));
+
+    /**
+     * @brief Trasnslation by vector v
+     * @param v translation vector
+     */
+    virtual void Translate(const Vector<Tf> &v);
 
     /**
      * @brief Returns point to read.
@@ -80,6 +87,8 @@ class Figure {
      * @return Vector<Tf> Point.
      */
     Vector<Tf> &operator[](const std::size_t &index);
+
+    
 };
 
 /**
@@ -91,6 +100,14 @@ class Figure {
 template <typename Tf>
 std::istream &operator>>(std::istream &cin, Figure<Tf> &figure);
 
+
+/**
+ * @brief Print to stream
+ * @tparam Tf 
+ * @param cout 
+ * @param figure 
+ * @return std::ostream& 
+ */
 template <typename Tf>
 std::ostream &operator<<(std::ostream &cout, const Figure<Tf> &figure);
 
@@ -98,22 +115,33 @@ template <typename Tf>
 class GnuFigure : public Figure<Tf>, public PzG::LaczeDoGNUPlota{
     private:
         std::string fileName;
-        std::fstream *tmpFile;
+        std::ofstream *tmpFile;
+        std::size_t dim;
+        
     public:
         GnuFigure();
+
         template <class... Tv>
         GnuFigure(const std::string &fileName, const Vector<Tf> &first, const Tv... args);
 
-        GnuFigure(const std::string &fileName,const std::size_t &dim);
+        GnuFigure(const std::string &fileName, const std::size_t &dim);
+
+        // GnuFigure(const GnuFigure &figure);
 
         ~GnuFigure();
 
         bool Save(const std::string &fileName);
 
+        bool Read(const std::string &fileName);
+
         bool Draw();
 
         void Rotate(const double &angle, const std::size_t &x = 1, const Vector<Tf> &v = Vector(Tf(), Tf()));
 
+        void Translate(const Vector<Tf> &v);
+
+        std::size_t animateFPS;
+        // GnuFigure<Tf> &operator=(const GnuFigure<Tf> &figure);
 };
 
 #include "Figure.cpp"

@@ -54,11 +54,6 @@ TEST_CASE("8. Gnu figure constructor and draw"){
     // GnuFigure rectangle("rectangle", A, B, C, D);
     // rectangle.Draw();
 }
-TEST_CASE("9. Gnu figure constructor read"){
-    GnuFigure<double> rectangle("prostokat", 2);
-    std::cout << "DUPA" << rectangle << "DUPA";
-
-}
 TEST_CASE("10. Gnu figure rotate")
 {
     Vector A(0.0, 0.0);
@@ -70,32 +65,34 @@ TEST_CASE("10. Gnu figure rotate")
     // std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
     // std::cin.ignore(100000, '\n');
     // Rec.Draw();
-    Rec.Rotate(M_PI / 2);
+    // Rec.Rotate(M_PI / 2);
     
-    std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
-    std::cin.ignore(100000, '\n');
+    // std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    // std::cin.ignore(100000, '\n');
 }
-TEST_CASE("11. Gnu s rotate")
+TEST_CASE("12. Gnu animate rotate")
 {
-    Vector A(0.0, 0.0);
-    Vector B(0.0, 100.0);
-    Vector C(-100.0, 100.0);
-    Vector D(0.0, 100.0);
-    Vector E(0.0, 0.0);
-    Vector F(100.0, 0.0);
-    Vector G(100.0, 100.0);
-    Vector H(100.0, 0.0);
-    Vector I(0.0, 0.0);
-    Vector J(-100.0, 0.0);
-    Vector K(-100.0, -100.0);
-    Vector L(-100.0, 0.0);
-    Vector M(0.0, 0.0);
-    Vector N(0.0, -100.0);
-    Vector O(100.0, -100.0);
-    Vector P(0.0, -100.0);
-    GnuFigure X("X", A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P);
-    X.Rotate(M_PI / 2);
-    std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    GnuFigure<double> p("prostokat.dat", 2);
+    p.Draw();
+    p.animateFPS = 60;
+    // std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    // std::cin.ignore(100000, '\n');
+    p.Rotate(45);
+    // std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    // std::cin.ignore(100000, '\n');
+}
+
+TEST_CASE("13. Gnu animate translation")
+{
+    GnuFigure<double> p("prostokat.dat", 2);
+    p.Draw();
+    p.animateFPS = 60;
+    std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    std::cin.ignore(100000, '\n');
+    Vector v(30.0, 40.0);
+    p.Translate(v);
+    p.Draw();
+    std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
     std::cin.ignore(100000, '\n');
 }
 

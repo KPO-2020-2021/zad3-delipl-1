@@ -42,8 +42,8 @@ Vector<Tf>::Vector(const Tf &first){
 
 template <typename Tf>
 Vector<Tf>::~Vector() {
-    if (this->value != nullptr)
-        delete[] this->value;
+        if (this->value != nullptr)
+            delete [] this->value;
 }
 
 /* -------------------------------------------------------------------------- */

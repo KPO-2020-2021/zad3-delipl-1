@@ -1,6 +1,8 @@
 #include <Figure.h>
 #include <limits>
 #include <iomanip> 
+#include <unistd.h>
+#define SCALE 30
 /* -------------------------------------------------------------------------- */
 /*                             FIGURE CONSTRUCTORS                            */
 /* -------------------------------------------------------------------------- */
@@ -9,7 +11,7 @@ template <class... Tv>
 Figure<Tf>::Figure(const std::string &name, const Vector<Tf> &first, const Tv... args)
 {
     this->name = name;
-    this->points = new Matrix(first, args...);
+    this->points = new Vector(first, args...);
 }
 template <typename Tf>
 Figure<Tf>::Figure()
@@ -28,6 +30,16 @@ Figure<Tf>::~Figure()
 /*                               FIGURE METHODS                               */
 /* -------------------------------------------------------------------------- */
 template <typename Tf>
+std::size_t Figure<Tf>::CountPoints() const { 
+    return this->points == nullptr? 0: this->points->Dim(); 
+}
+
+template <typename Tf>
+std::size_t Figure<Tf>::Dimention() const { 
+    return this->points == nullptr? 0 :(*this->points)[0].Dim(); 
+}
+
+template <typename Tf>
 void Figure<Tf>::Rotate(const double &angle, const std::size_t &x, const Vector<Tf> &v)
 {
     Matrix<Tf> M(Vector(Tf(cos(angle)), Tf(-sin(angle))),
@@ -41,7 +53,12 @@ void Figure<Tf>::Rotate(const double &angle, const std::size_t &x, const Vector<
         }
     }
 }
-
+template <typename Tf>
+void Figure<Tf>::Translate(const Vector<Tf> &v){
+    for(std::size_t i = 0; i < this->CountPoints(); i++){
+        this->points[i] = (*this->points)[i] + v[i];
+    }
+}
 /* -------------------------------------------------------------------------- */
 /*                              FIGURE OPERATORS                              */
 /* -------------------------------------------------------------------------- */
@@ -87,67 +104,61 @@ template <typename Tf>
 GnuFigure<Tf>::GnuFigure(){
     this->tmpFile = nullptr;
     this->points = nullptr;
+    this->dim = 0;
+    this->animateFPS = 1;
 }
 template <typename Tf>
 template <typename... Tv>
-GnuFigure<Tf>::GnuFigure(const std::string &fileName, const Vector<Tf> &first, const Tv... args)
-{
+GnuFigure<Tf>::GnuFigure(const std::string &name, const Vector<Tf> &first, const Tv... args){
     this->UsunOstatniaNazwe();
     this->UsunOstatniaNazwe();
-    this->fileName = std::string("../tmp/") + fileName + std::string(".dat");
-    this->tmpFile = new std::fstream();
 
-    this->points = new Matrix(first, args...);
-    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Ciagly, 2);
-
-    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Punktowy, 2);
     
-    this->_Xmax = 200;
-    this->_Xmin = -200;
-    this->_Ymax = 225/2;
-    this->_Ymin = -225/2; 
+    this->name = name;
+
+    this->fileName = "../tmp/_" + name;
+    this->tmpFile = new std::ofstream;
+    this->tmpFile->open(this->fileName);
+
+    this->points = new Vector(first, args...);
+    
+    this->_Xmax =  16*SCALE;
+    this->_Xmin = -16*SCALE;
+    this->_Ymax =  9*SCALE;
+    this->_Ymin = -9*SCALE; ;
     
     this->ZmienTrybRys(PzG::TR_2D);
+    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Ciagly, 2);
+    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Punktowy, 2);
 }
 
 template <typename Tf>
-GnuFigure<Tf>::GnuFigure(const std::string &fileName, const std::size_t &dim){
+GnuFigure<Tf>::GnuFigure(const std::string &name, const std::size_t &dim){
     this->UsunOstatniaNazwe();
     this->UsunOstatniaNazwe();
-    this->fileName = std::string("../tmp/") + fileName;
+    this->name = name;
+    this->fileName = "../tmp/_" + name;
+    this->dim = dim;
+    this->animateFPS = 1;
+    
+    this->_Xmax =  16*SCALE;
+    this->_Xmin = -16*SCALE;
+    this->_Ymax =  9*SCALE;
+    this->_Ymin = -9*SCALE; 
+
+    this->Read(name);
+
+    this->tmpFile = new std::ofstream;
+    this->tmpFile->open(this->fileName);
+
+    this->ZmienTrybRys(PzG::TR_2D);
     this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Ciagly, 2);
     this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Punktowy, 2);
-    
-    this->_Xmax = 200;
-    this->_Xmin = -200;
-    this->_Ymax = 225/2;
-    this->_Ymin = -225/2; 
-
-    this->tmpFile = new std::fstream();
-    // std::cout << "NAME " << fileName+".dat";
-
-    this->tmpFile->open("../datasets/"+fileName+".dat", std::ios::in);
-    if(!this->tmpFile->good())
-        throw std::logic_error("File not found");
-
-    Vector<Vector<Tf>> Y;
-    Vector<Tf> T;
-    for(std::size_t i = 0; i < dim; ++i)
-        T.Put(Tf());
-    
-    while(!tmpFile->eof()){
-        for(std::size_t i = 0; i < dim; ++i){  
-            (*tmpFile) >> T;
-            Y.Put(T);
-        }
-    }
-    this->tmpFile->close(); 
-
-    this->points = new Matrix(Y);
 }
 
 template <typename Tf>
 GnuFigure<Tf>::~GnuFigure(){
+    this->tmpFile->close();
     delete this->tmpFile;
 }
 
@@ -155,54 +166,93 @@ GnuFigure<Tf>::~GnuFigure(){
 /*                              GNUFIGURE METHODS                             */
 /* -------------------------------------------------------------------------- */
 template <typename Tf>
-bool GnuFigure<Tf>::Save(const std::string &fileName){
-    
-    if(this->tmpFile->is_open())
-        *this->tmpFile << *this;
-    else{
-        this->tmpFile->open(fileName, std::ios::in);
-        *this->tmpFile << *this;
-
-    }
-    this->tmpFile->close();
+bool GnuFigure<Tf>::Save(const std::string &name){
+    std::ofstream file;
+    file.open("../datasets/"+name);
+    file << *this;
+    file.close();
     return true;
 }
+
 template <typename Tf>
-bool GnuFigure<Tf>::Draw()
-{
-    this->Save(this->fileName);
+bool GnuFigure<Tf>::Read(const std::string &name){
+    std::ifstream file;
+    file.open("../datasets/"+name);
     
+    if(!file.good())
+        throw std::logic_error("File not found");
+
+    Vector<Tf> T;
+    for(std::size_t i = 0; i < this->dim; ++i)
+        T.Put(Tf());
+    
+    Vector<Vector<Tf>> Y;
+    std::size_t j = 0;
+    while(!file.eof()){
+        for(std::size_t i = 0; i < T.Dim(); ++i){  
+            file  >> T;
+            if(j){
+                if(Y[j-1] != T)  
+                    Y.Put(T);
+            }
+            else
+                Y.Put(T);
+            ++j;
+        }
+    }
+    this->points = new Vector<Vector<Tf>>(Y);
+    file.close();
+    return true;
+}
+
+template <typename Tf>
+bool GnuFigure<Tf>::Draw(){
+    this->Save(this->fileName);
     return this->Rysuj();
 }
 
 template <typename Tf>
 void GnuFigure<Tf>::Rotate(const double &angle,  const std::size_t &x, const Vector<Tf> &v){
     double y = angle* M_PI/180;
-    // int i = 0;
-    // while(x*i < angle){
-    //     Matrix<double> M(Vector(cos(x), -sin(x)),
-    //                     Vector(sin(x), cos(x)));
-    //     for (std::size_t i = 0; i < this->CountPoints(); i++){
-    //         Vector u = (*this)[i];
-    //         u = u - v;
-    //         Vector w = M * u;
-    //         (*this)[i] = w + v;
-    //     }
-    //     // this->Save(this->fileName);
-    //     this->Draw();
-    //     std::cout << *this;
     
-    //     usleep(100000);
-    //     i++;
-    // }
-    Matrix M(Vector(cos(y), -sin(y)),
-             Vector(sin(y), cos(y)));
-    for (std::size_t j = 0; j <x; j++){
-        for (std::size_t i = 0; i < this->CountPoints(); i++){
-            Vector u = (*this)[i];
-            u = u - v;
-            Vector w = M * u;
-            (*this)[i] = w + v;
+    if(this->animateFPS == 1){
+        Matrix M(Vector(cos(y), -sin(y)),
+                Vector(sin(y), cos(y)));
+        for (std::size_t j = 0; j <x; j++){
+            for (std::size_t i = 0; i < this->CountPoints(); i++){
+                Vector u = (*this)[i];
+                u = u - v;
+                Vector w = M * u;
+                (*this)[i] = w + v;
+            }
         }
+    }
+    else{
+        double l = angle /this->animateFPS* M_PI/180;
+        int i = 0;
+        Matrix<double> M(Vector(cos(l), -sin(l)),
+                        Vector(sin(l), cos(l)));
+        for (std::size_t j = 0; j <x; j++){
+            while(l*i <= angle* M_PI/180){
+                for (std::size_t d = 0; d < this->CountPoints(); d++){
+                    Vector u = (*this)[d];
+                    u = u - v;
+                    Vector w = M * u;
+                    (*this)[d] = w + v;
+                }
+                this->Draw();
+                std::cout << *this;
+            
+                usleep(50000);
+                i++;
+            }
+        }
+    }
+}
+
+template <typename Tf>
+void GnuFigure<Tf>::Translate(const Vector<Tf> &v){
+    for(std::size_t i = 0; i < this->CountPoints(); i++){
+        (*this->points)[i] = (*this->points)[i] + v;
     }
 }
