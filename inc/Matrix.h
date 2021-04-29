@@ -47,7 +47,7 @@ public:
      * @brief Construct a new Matrix object
      * @param M Matrix to copy
      */
-    Matrix(const Matrix &M);
+    Matrix(const Matrix &M); //TODO
 
     /**
      * @brief Destroy the Matrix object
@@ -65,7 +65,7 @@ public:
      * @param sum previous sum.
      * @return Tf determinate.
      */
-    Tf Det(const Tf &sum);
+    Tf Det() const;
 
     /**
      * @brief Acces to N dimention

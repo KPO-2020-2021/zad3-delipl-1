@@ -56,21 +56,26 @@ TEST_CASE("8. Matrix Vector of Vector Constructor"){
     CHECK(M(0, 0) == 5);
     CHECK(M(1, 1) == 6);
 }
-// TEST_CASE("9. Matrix det of 3x3"){
-//     Matrix N(Vector(1, 0),
-//              Vector(0, 1));
-//     CHECK(N.CrossPrepare(0) == 1);
-//     Matrix M(Vector(1, 0, 1),
-//              Vector(0, 1, 0),
-//              Vector(1, 0, 1));
-//     CHECK(M.CrossPrepare(0) == 1);
-//     Matrix C(Vector(1, 2, 3),
-//              Vector(-1, -1, -1),
-//              Vector(2, 2, 2));
-//     CHECK(C.CrossPrepare(0) == 0);
-//     Matrix F(Vector(1, 2, 3, 4),
-//            Vector(4, 3, 2, 1),
-//            Vector(1, 2, 4, 3),
-//            Vector(4, 1, 3, 1));
-//     CHECK(F.CrossPrepare(0) == -55);
-// }
+TEST_CASE("9. Matrix det of 3x3"){
+    // Matrix N(Vector(2.0, 3.0, 4.0),
+    //          Vector(5.0, 1.0, 6.0),
+    //          Vector(2.0, 3.0, 4.0));
+    // N.Det();
+
+    // std::cout << N << std::endl;
+    // CHECK(N(2,0) == 0);
+    // Matrix P(Vector(2.0, 3.0, 4.0),
+    //          Vector(5.0, 1.0, 6.0),
+    //          Vector(5.0, -6.0, 1.36));
+    // P.Det();
+
+    // std::cout << P << std::endl;
+    // CHECK(P(2,0) == 0);
+
+    Matrix R(Vector(2.0, 3.0),
+             Vector(5.0, 1.0));
+
+    std::cout << R.Det() << std::endl;
+    CHECK(R.Det() == -13);
+  
+}

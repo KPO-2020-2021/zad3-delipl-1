@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iomanip>
 #include "Matrix.h"
 
 /* -------------------------------------------------------------------------- */
@@ -51,7 +52,35 @@ Vector<Tf> Matrix<Tf>::CrossPrepare() const {
         throw std::out_of_range("Matrix cannnot define determinant");
     }
 }
+template <class Tf>
+Tf Matrix<Tf>::Det() const{
+    Tf det = Tf(1);
+    Matrix M((*this->vector));
+    for(std::size_t i = 0; i < this->n; ++i){           // po wierszach
+        for(std::size_t j = i; j < this->m; ++j){
+            if(M(j,i) != 0){
+                Tf x = M(j,i);
+                // dzielenie wiersza
+                M[i] = M[i]/x;
+                det = det * x;
+                std::cout << det << " Co sie?" << std::endl;
 
+                det = (i-j % 2 == 0)? det: Tf(-1) * det; // zamiana wierszy zmienia znak w zależności od parzystości
+                Vector buff(M[i]);
+                M[i] = M[j];
+                M[j] = buff;
+                // niższe wiersze odjęte żeby było 0
+                for(std::size_t k = 0; k < this->n; ++k){
+                    if(k != j){
+                        Tf y = M(k, j);
+                        M[k] = M[k] - M[j] * y; 
+                    }
+                }
+            }
+        }
+    }
+    return det;
+}
 /* -------------------------------------------------------------------------- */
 /*                                  OPERATORS                                 */
 /* -------------------------------------------------------------------------- */
@@ -100,7 +129,7 @@ std::ostream &operator<<(std::ostream &cout, const Matrix<Tf> &M){
     for (std::size_t i = 0; i < M.N(); i++){
         cout << "| ";
         for (std::size_t j = 0; j < M.M(); j++) {
-            cout << M(i, j) << " ";
+            cout << std::setw(16) << std::fixed << std::setprecision(10) << M(i, j) << 0;
         }
         cout << "|" << std::endl;
     }

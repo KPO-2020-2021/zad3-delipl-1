@@ -220,10 +220,11 @@ void GnuFigure<Tf>::Rotate(const double &angle,  const std::size_t &x, const Vec
                 Vector(sin(y), cos(y)));
         for (std::size_t j = 0; j <x; j++){
             for (std::size_t i = 0; i < this->CountPoints(); i++){
-                Vector u = (*this)[i];
-                u = u - v;
-                Vector w = M * u;
-                (*this)[i] = w + v;
+                // Vector u = (*this)[i];
+                // u = u - v;
+                // Vector w = M * u;
+                // (*this)[i] = w + v;
+                (*this)[i] = M*(*this)[i];
             }
         }
     }
