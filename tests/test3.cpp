@@ -74,7 +74,7 @@ TEST_CASE("12. Gnu animate rotate")
 {
     GnuFigure<double> p("prostokat.dat", 2);
     p.Draw();
-    p.animateFPS = 60;
+    // p.animateFPS = 60;
     // std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
     // std::cin.ignore(100000, '\n');
     p.Rotate(45);
@@ -86,7 +86,7 @@ TEST_CASE("13. Gnu animate translation")
 {
     GnuFigure<double> p("prostokat.dat", 2);
     p.Draw();
-    p.animateFPS = 60;
+    // p.animateFPS = 60;
     std::cout << p << "Naciśnij ENTER, aby kontynuowac" << std::endl;
     std::cin.ignore(100000, '\n');
     Vector v(30.0, 40.0);
@@ -96,3 +96,13 @@ TEST_CASE("13. Gnu animate translation")
     std::cin.ignore(100000, '\n');
 }
 
+TEST_CASE("14. Open file"){
+    GnuFigure<double> X("Prostokat.dat", 2);
+    X.Draw();
+    //  std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    // std::cin.ignore(100000, '\n');
+    X.Translate(Vector(50.0, -25.0));
+    X.Draw();
+    // std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+    // std::cin.ignore(100000, '\n');
+}

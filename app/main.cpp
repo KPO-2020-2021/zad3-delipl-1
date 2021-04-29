@@ -84,18 +84,27 @@ int main(){
                         figure->Save(name);
         }},
         {"Animate       - FPS", [&figure](){
-                          if(figure == nullptr){
+                        if(figure == nullptr){
                             std::cout << "Empty Figure" << std::endl;
                             std::cout << "Press Enter to back to menu...\n"; 
                             std::cin.ignore(std::numeric_limits<int>::max(), '\n');
                             std::cin.ignore(std::numeric_limits<int>::max(), '\n');
                             return;
                         }
-                        std::size_t fps;
-                        std::cin >> fps;
-                        figure->animateFPS = fps;
+                        std::cin >> figure->animateFPS;
+       }},
+        {"Translation   - Vector", [&figure](){
+                        if(figure == nullptr){
+                            std::cout << "Empty Figure" << std::endl;
+                            std::cout << "Press Enter to back to menu...\n"; 
+                            std::cin.ignore(std::numeric_limits<int>::max(), '\n');
+                            std::cin.ignore(std::numeric_limits<int>::max(), '\n');
+                            return;
+                        }
+                        Vector<double> v;
+                        std::cin >> v;
+                        figure->Translate(v);
         }},
-        {"Translation   - Vector", Foo},
         {"Rotate        - angle, x times", [&figure](){
                         if(figure == nullptr){
                             std::cout << "Empty Figure" << std::endl;
