@@ -5,6 +5,10 @@
 #include "GnuPlotApi.hh"
 #include <fstream>
 
+#include "frameRate.h"
+
+constexpr double GRAVITY = 9.81;
+
 /**
  * @brief Geomethric Figure with endless points and name.
  * @tparam Tf type of typespace.
@@ -53,7 +57,6 @@ class Figure {
      * @return std::size_t quantity of Points
      */
     std::size_t CountPoints() const;
-
 
     /**
      * @brief Return dimention pf figure
@@ -117,16 +120,15 @@ class GnuFigure : public Figure<Tf>, public PzG::LaczeDoGNUPlota{
         std::string fileName;
         std::ofstream *tmpFile;
         std::size_t dim;
+
+        Vector<Tf> *velocity;
+
+        Vector<Tf> *force;
+
+        double mass;
         
     public:
-        GnuFigure();
-
-        template <class... Tv>
-        GnuFigure(const std::string &fileName, const Vector<Tf> &first, const Tv... args);
-
         GnuFigure(const std::string &fileName, const std::size_t &dim);
-
-        // GnuFigure(const GnuFigure &figure);
 
         ~GnuFigure();
 
@@ -140,8 +142,11 @@ class GnuFigure : public Figure<Tf>, public PzG::LaczeDoGNUPlota{
 
         void Translate(const Vector<Tf> &v);
 
+        void AddForce(const Vector<Tf> &v);
+
+        void EveryFrame();
+
         std::size_t animateFPS;
-        // GnuFigure<Tf> &operator=(const GnuFigure<Tf> &figure);
 };
 
 #include "Figure.cpp"

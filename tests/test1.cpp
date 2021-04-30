@@ -4,9 +4,8 @@
 #endif 
 #include "Vector.h"
 
-TEST_CASE("1. Vector default constructor"){
-    Vector<int> x;
-    CHECK(1 == 1);
+TEST_CASE("1. Vector default constructor"){  
+    CHECK_NOTHROW(Vector<int> x);
 }
 TEST_CASE("2. Vector<Vector> table of Vectorrs"){
     Vector w(5, 6);
@@ -158,13 +157,13 @@ TEST_CASE("18. Vector remove Vector method") {
     CHECK(v[0].Dim() == 1);
     CHECK_THROWS(v[0][1]);
 }
-TEST_CASE("x. Vector input output") {
-    Vector<int> x;
-    std::istringstream in("[5, +9, -9, 16, 36]");
-    in >> x;
-    std::ostringstream out; 
-    out << x;
-    CHECK(out.str() == "[5, 9, -9, 16, 36]");
-    in = std::istringstream("[6,32,5");
-    CHECK_THROWS(in >> x);
-}
+// TEST_CASE("x. Vector input output") {
+//     Vector<int> x;
+//     std::istringstream in("[5, +9, -9, 16, 36]");
+//     in >> x;
+//     std::ostringstream out; 
+//     out << x;
+//     CHECK(out.str() == "[5, 9, -9, 16, 36]");
+//     in = std::istringstream("[6,32,5");
+//     CHECK_THROWS(in >> x);
+// }

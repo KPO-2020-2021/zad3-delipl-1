@@ -42,8 +42,8 @@ Vector<Tf>::Vector(const Tf &first){
 
 template <typename Tf>
 Vector<Tf>::~Vector() {
-        if (this->value != nullptr)
-            delete [] this->value;
+    if (this->value != nullptr)
+        delete [] this->value;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -156,10 +156,17 @@ Vector<Tf> &Vector<Tf>::operator=(const Vector &v) {
 }
 
 template <typename Tf>
+Vector<Tf> &Vector<Tf>::operator=(const Tf &x) {
+    for (std::size_t i = 0; i < this->dim; i++)
+        this->value[i] = x;
+    return *this;
+}
+
+template <typename Tf>
 Vector<Tf> Vector<Tf>::operator+(const Vector &v) const {
     Vector u(v);
     for (std::size_t i = 0; i < this->dim; i++)
-        u.value[i] += this->value[i];
+        u[i] =  u[i] + this->value[i];
     return u;
 }
 template <typename Tf>
@@ -204,7 +211,6 @@ double Vector<double>::operator*(const Vector &v) {
     re = re * MIN_DIFF;
 
     return re;
-    // return x;
 }
 
 template <typename Tf>

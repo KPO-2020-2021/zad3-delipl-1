@@ -18,7 +18,7 @@ Matrix<Tf>::Matrix(const Vector<Tf> &first, const Tv... args) {
     this->n = sizeof...(args) + 1;
     this->m = first.Dim();
     Vector<Tf> tempTab[sizeof...(args)] = {args...};
-    for (std::size_t i = 0; i < this->n - 1; i++) {
+    for (std::size_t i = 0; i < this->n - 1; ++i) {
         if (first.Dim() != tempTab[i].Dim())
             throw std::out_of_range("Vector in Matrix doesn't have same type");
     }
@@ -44,9 +44,9 @@ template <class Tf>
 Vector<Tf> Matrix<Tf>::CrossPrepare() const {
     if (this->n == 2 && this->m == 3) {
         Matrix M(Vector(1, 1, 1), (*this)[0], (*this)[1]);
-        Tf a(M(1, 1) * M(2, 2) - M(1, 2) * M(2, 1));
-        Tf b(M(1, 2) * M(2, 0) - M(1, 0) * M(2, 2));
-        Tf c(M(1, 0) * M(2, 1) - M(1, 1) * M(2, 0));
+        Tf a(M[1][1] * M[2][2] - M[1][2] * M[2][1]);
+        Tf b(M[1][2] * M[2][0] - M[1][0] * M[2][2]);
+        Tf c(M[1][0] * M[2][1] - M[1][1] * M[2][0]);
         return Vector(a, b, c);
     } else {
         throw std::out_of_range("Matrix cannnot define determinant");
@@ -58,42 +58,40 @@ Tf Matrix<Tf>::Det() const{
     Matrix M((*this->vector));
     for(std::size_t i = 0; i < this->n; ++i){           // po wierszach
         for(std::size_t j = i; j < this->m; ++j){
-            if(M(j,i) != 0){
-                Tf x = M(j,i);
+            if(M[j][i] != 0){
+                Tf x = M[j][i];
                 // dzielenie wiersza
                 M[i] = M[i]/x;
                 det = det * x;
-                std::cout << det << " Co sie?" << std::endl;
 
                 det = (i-j % 2 == 0)? det: Tf(-1) * det; // zamiana wierszy zmienia znak w zależności od parzystości
                 Vector buff(M[i]);
                 M[i] = M[j];
                 M[j] = buff;
                 // niższe wiersze odjęte żeby było 0
-                for(std::size_t k = 0; k < this->n; ++k){
-                    if(k != j){
-                        Tf y = M(k, j);
-                        M[k] = M[k] - M[j] * y; 
-                    }
+                for(std::size_t k = j+1; k < this->n; ++k){
+                    Tf y = M[k][j];
+                    M[k] = M[k] - M[j] * y; 
                 }
             }
         }
     }
     return det;
 }
+template <class Tf>
+Matrix<Tf> Matrix<Tf>::Flip() const{
+    Vector<Vector<Tf>> Mat;
+    for(std::size_t j = 0; j < this->M(); j++){
+        Vector<Tf> column;
+        for(std::size_t i = 0; i < this->N(); i++)
+            column.Put((*this)[i][j]);
+        Mat.Put(column);
+    }
+    return Matrix(Mat);
+}
 /* -------------------------------------------------------------------------- */
 /*                                  OPERATORS                                 */
 /* -------------------------------------------------------------------------- */
-template <class Tf>
-Tf Matrix<Tf>::operator()(const std::size_t &n, const std::size_t &m) const {
-    return ((*this->vector)[n])[m];
-}
-
-template <class Tf>
-Tf &Matrix<Tf>::operator()(const std::size_t &n, const std::size_t &m){
-    return ((*this->vector)[n])[m];
-}
-
 template <class Tf>
 Vector<Tf> Matrix<Tf>::operator[](const std::size_t &index) const {
     return (*this->vector)[index];
@@ -107,10 +105,21 @@ Vector<Tf> &Matrix<Tf>::operator[](const std::size_t &index){
 template <class Tf>
 Vector<Tf> Matrix<Tf>::operator*(const Vector<Tf> &v) const {
     Vector u(v);
-    for (std::size_t i = 0; i < this->m; i++) {
+    for (std::size_t i = 0; i < this->m; ++i) {
         u[i] = (*this)[i] * v;
     }
     return u;
+}
+template <class Tf>
+Matrix<Tf> Matrix<Tf>::operator*(const Matrix<Tf> &M) const{
+    if(this->N() != M.M())
+        throw std::logic_error("Can't multiplar this");
+    Vector<Vector<Tf>> toMatrix;
+    Matrix flippedMatrix = M.Flip();
+    for(std::size_t i = 0; i < this->N(); ++i){
+        toMatrix.Put((*this)[i] * flippedMatrix[i]);
+    }
+    return Matrix(toMatrix);
 }
 
 template <typename Tf>
@@ -126,10 +135,10 @@ Vector<Tf> operator&(const Vector<Tf> &v, const Vector<Tf> &u){
 
 template <typename Tf>
 std::ostream &operator<<(std::ostream &cout, const Matrix<Tf> &M){
-    for (std::size_t i = 0; i < M.N(); i++){
+    for (std::size_t i = 0; i < M.N(); ++i){
         cout << "| ";
         for (std::size_t j = 0; j < M.M(); j++) {
-            cout << std::setw(16) << std::fixed << std::setprecision(10) << M(i, j) << 0;
+            cout << std::setw(16) << std::fixed << std::setprecision(10) << M[i][j] << 0;
         }
         cout << "|" << std::endl;
     }

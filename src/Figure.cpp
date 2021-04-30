@@ -56,7 +56,7 @@ void Figure<Tf>::Rotate(const double &angle, const std::size_t &x, const Vector<
 template <typename Tf>
 void Figure<Tf>::Translate(const Vector<Tf> &v){
     for(std::size_t i = 0; i < this->CountPoints(); i++){
-        this->points[i] = (*this->points)[i] + v;
+        (*this->points)[i] = (*this->points)[i] + v;
     }
 }
 /* -------------------------------------------------------------------------- */
@@ -100,38 +100,15 @@ std::istream &operator>>(std::istream &cin, Figure<Tf> &figure)
 /* -------------------------------------------------------------------------- */
 /*                           GNUFIGURE CONSTRUCTORS                           */
 /* -------------------------------------------------------------------------- */
-template <typename Tf>
-GnuFigure<Tf>::GnuFigure(){
-    this->tmpFile = nullptr;
-    this->points = nullptr;
-    this->dim = 0;
-    this->animateFPS = 1;
-}
-template <typename Tf>
-template <typename... Tv>
-GnuFigure<Tf>::GnuFigure(const std::string &name, const Vector<Tf> &first, const Tv... args){
-    this->UsunOstatniaNazwe();
-    this->UsunOstatniaNazwe();
+// template <typename Tf>
+// GnuFigure<Tf>::GnuFigure(){
+//     this->tmpFile = nullptr;
+//     this->points = nullptr;
+//     this->velocity = nullptr;
 
-    
-    this->name = name;
-
-    this->fileName = "../tmp/_" + name;
-    this->tmpFile = new std::ofstream;
-    this->tmpFile->open(this->fileName);
-
-    this->points = new Vector(first, args...);
-    
-    this->_Xmax =  16*SCALE;
-    this->_Xmin = -16*SCALE;
-    this->_Ymax =  9*SCALE;
-    this->_Ymin = -9*SCALE; ;
-    
-    this->ZmienTrybRys(PzG::TR_2D);
-    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Ciagly, 2);
-    this->DodajNazwePliku(this->fileName.c_str(), PzG::RR_Punktowy, 2);
-}
-
+//     this->dim = 0;
+//     this->animateFPS = 1;
+// }
 template <typename Tf>
 GnuFigure<Tf>::GnuFigure(const std::string &name, const std::size_t &dim){
     this->UsunOstatniaNazwe();
@@ -147,6 +124,12 @@ GnuFigure<Tf>::GnuFigure(const std::string &name, const std::size_t &dim){
     this->_Ymin = -9*SCALE; 
 
     this->Read(name);
+    // Vector<Tf> T;
+    // for(std::size_t i = 0; i < dim; ++i){
+    //     T.Put(Tf(0));
+    // }
+    // this->force = new Vector(T);
+    // this->velocity = new Vector(T);
 
     this->tmpFile = new std::ofstream;
     this->tmpFile->open(this->fileName);
@@ -177,6 +160,9 @@ bool GnuFigure<Tf>::Save(const std::string &name){
 template <typename Tf>
 bool GnuFigure<Tf>::Read(const std::string &name){
     std::ifstream file;
+    if(this->points != nullptr)
+        delete this->points;
+
     file.open("../datasets/"+name);
     
     if(!file.good())
@@ -234,6 +220,25 @@ template <typename Tf>
 void GnuFigure<Tf>::Translate(const Vector<Tf> &v){
     for(std::size_t i = 0; i < this->CountPoints(); i++)
         (*this->points)[i] = (*this->points)[i] + v;
+}
 
-    // this->Save(this->fileName);
+template <typename Tf>
+void GnuFigure<Tf>::AddForce(const Vector<Tf> &v){
+    this->force = this->force + v;
+}
+
+template <typename Tf>
+void GnuFigure<Tf>::EveryFrame(){
+    *this->force = Tf();
+
+    (*this->force)[1] -= this->mass*GRAVITY;
+    
+    *this->velocity = *this->velocity +  *this->force * Tf(dt) / this->mass;
+
+
+    // for(std::size_t i = 0; i< this->dim; ++i)
+    //     (*this->velocity)[i] = (*this->velocity)[i] * dt;
+    // *this->points = *(this->points) + *(this->velocity); 
+
+    this->Draw();
 }

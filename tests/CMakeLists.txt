@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.12)
 # List all files containing tests. (Change as needed)
 set(TESTFILES        # All .cpp files in tests/
     main.cpp
-    dummy.cpp
     # your new file
 )
 
@@ -68,6 +67,8 @@ set_target_properties(ut-menu PROPERTIES
     CXX_STANDARD_REQUIRED YES 
     CXX_EXTENSIONS NO
 )
+
+
 # --------------------------------------------------------------------------------
 #                         Make Tests (no change needed).
 # --------------------------------------------------------------------------------
@@ -76,7 +77,7 @@ set(TEST_RUNNER_PARAMS "")  # Any arguemnts to feed the test runner (change as n
 
 add_executable(${TEST_MAIN} ${TESTFILES})
 target_link_libraries(${TEST_MAIN} PUBLIC doctest ${LIBS})
-
+target_include_directories(${TEST_MAIN}  PRIVATE ${INC})
 
 set_target_properties(${TEST_MAIN} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 target_set_warnings(${TEST_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).

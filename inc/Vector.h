@@ -119,6 +119,13 @@ public:
     Vector &operator=(const Vector &v);
 
     /**
+     * @brief Operator = between Vector and value, change all values in Vector
+     * @param x 
+     * @return Vector& 
+     */
+    Vector &operator=(const Tf &x);
+
+    /**
      * @brief Additaion operator
     */
     Vector operator+(const Vector &v) const;

@@ -68,32 +68,22 @@ public:
     Tf Det() const;
 
     /**
-     * @brief Acces to N dimention
+     * @brief Flip void creating new Matrix which has columns changed to rows
+     * @return Matrix channged colums with rows
+     */
+    Matrix Flip() const;
+
+    /**
+     * @brief Acces to N dimention rows of Matrix.
      * @return std::size_t private n value
      */
     std::size_t N() const { return this->n; };
 
     /**
-     * @brief Acces to M dimention
+     * @brief Acces to M dimention columns of Matrix.
      * @return std::size_t private m value
      */
     std::size_t M() const { return this->m; };
-
-    /**
-     * @brief Acces function to read values in Matrix.
-     * @param n row number.
-     * @param m column number.
-     * @return Tf::type value in place (n, m).
-     */
-    Tf operator()(const std::size_t &n, const std::size_t &m) const;
-
-    /**
-     * @brief Acces function to read and write values in Matrix.
-     * @param n row number.
-     * @param m column number.
-     * @return Tf::type value in place (n, m).
-     */
-    Tf &operator()(const std::size_t &n, const std::size_t &m);
 
     /**
      * @brief Operator [] acces to read to row.
@@ -115,6 +105,13 @@ public:
      * @return Vector<Tf> result. 
      */
     Vector<Tf> operator*(const Vector<Tf> &v) const;
+
+     /**
+     * @brief Multiplar operator Matrix by Matrux.
+     * @param M matrix.
+     * @return Matrix result. 
+     */
+    Matrix operator*(const Matrix<Tf> &M) const;
 };
 
 /**
