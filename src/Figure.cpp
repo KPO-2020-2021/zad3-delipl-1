@@ -194,12 +194,15 @@ bool GnuFigure<Tf>::Draw(){
 
 template <typename Tf>
 void GnuFigure<Tf>::Rotate(const double &angle,  const std::size_t &x, const Vector<Tf> &v){
-    double l = angle /this->animateFPS* M_PI/180;
-    int i = 0;
+    double l = (angle / this->animateFPS) * M_PI/180;
+    
     Matrix<double> M(Vector(cos(l), -sin(l)),
                     Vector(sin(l), cos(l)));
-    for (std::size_t j = 0; j <x; j++){
-        while(l*i <= angle* M_PI/180){
+
+    for (std::size_t j = 0; j < x; j++){
+        int i = 0;
+        
+        while(fabs(l*i) < fabs(angle) * M_PI/180){
             for (std::size_t d = 0; d < this->CountPoints(); d++){
                 Vector u = (*this)[d];
                 u = u - v;
@@ -207,8 +210,6 @@ void GnuFigure<Tf>::Rotate(const double &angle,  const std::size_t &x, const Vec
                 (*this)[d] = w + v;
             }
             this->Draw();
-            std::cout << *this;
-        
             usleep(this->animateFPS == 1? 0 : 50000);
             i++;
         }
@@ -218,8 +219,18 @@ void GnuFigure<Tf>::Rotate(const double &angle,  const std::size_t &x, const Vec
 
 template <typename Tf>
 void GnuFigure<Tf>::Translate(const Vector<Tf> &v){
-    for(std::size_t i = 0; i < this->CountPoints(); i++)
-        (*this->points)[i] = (*this->points)[i] + v;
+    Vector u(v);
+    u =  u / this->animateFPS;
+    std::cout << u << std::endl;; 
+    int j = 0;
+    while(fabs(u[0]*j) < fabs(v[0])){
+
+        for(std::size_t i = 0; i < this->CountPoints(); i++)
+            (*this->points)[i] = (*this->points)[i] + u;
+        this->Draw();
+        usleep(this->animateFPS == 1? 0 : 50000);
+        ++j;
+    }  
 }
 
 template <typename Tf>
