@@ -154,13 +154,13 @@ Vector<T, dim> Vector<T, dim>::operator/(const T &k) const{
 
 template <typename T, std::size_t dim>
 Vector<T, dim> &Vector<T, dim>::operator*=(const Vector &v) {
-    static_assert(!dim, "Cross product does not defined");
+    static_assert(dim == 3, "Cross product does not defined");
     return *this;
 }
 
 template <typename T, std::size_t dim>
 Vector<T, dim> Vector<T, dim>::operator*(const Vector &v) const{
-    static_assert(!dim, "Cross product does not defined");
+    static_assert(dim == 3, "Cross product does not defined");
     return *this;
 }
 

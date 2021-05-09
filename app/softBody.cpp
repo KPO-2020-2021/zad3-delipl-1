@@ -1,48 +1,59 @@
 #include <iostream>
 #include <limits>
-#include <ctime>
-#include "exampleConfig.h"
-#include "Menu.h"
-#include "Figure.h"
-#include "frameRate.h"
+#include <chrono>
+#include <csignal>
+#include "config.hpp"
+#include "Menu.hpp"
+#include "Scene.hpp"
+
+void signalHandler( int signum ) {
+    std::cout << "Interrupt signal (" << signum << ") received.\n";
+    system("killall gnuplot & clear");
+    exit(signum);  
+}
 
 enum Draw{
     goToDraw
 };
-
+typedef int LiczbaCalkowita;
 int main(int argc, const char** argv) { 
-    GnuFigure<double> *figure = new GnuFigure<double>("spring.dat", 2);
+    signal(SIGINT, signalHandler);
 
-    std::clock_t timer;
-    int i=0;
-    std::cout << timer << "   " << (float)clock()/CLOCKS_PER_SEC << std::endl;
 
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Scene scene;
+    Object cuboid("cube.dat", 16);
+    Object ground("ground.dat", 4);
+    scene.AddObject(cuboid);
+    scene.AddObject(ground);
+    
+
+    std::cout << "Start animating..." << std::endl;
     while(true){
-        std::clock_t diff = (clock() - timer)/CLOCKS_PER_SEC;
-        /* -------------------------------------------------------------------------- */
-        /*                         CHECKING TIME FOR INTERRUPT                        */
-        /* -------------------------------------------------------------------------- */
+        auto measure = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(measure - start);
+
         try{
-            if(diff >= dt*1000){
-                // dopasować czas zeby gnuplots sie n ie jebval
-                std::cout << "Printing...\t" << "Took: "<< (float)clock()/CLOCKS_PER_SEC << std::endl;
+            if(elapsed.count() >= (dt*1000)){
+                start = std::chrono::high_resolution_clock::now();
                 throw Draw::goToDraw;
             }
+            /**
+             * @brief 
+             * 
+             */
 
-            // if(currentTime - refTime >= dt){
-            //     refTime = std::time(nullptr);
-            //    
-            // }
+            if(ground.transform.position[0] > 100){
             
-            std::cout << "Poza pętlą" << std::endl;
+                
+            }
+
         }
         catch(Draw){
-            figure->EveryFrame();
+            scene.Update();
         }
     }
 
-
-
-    // delete figure;
     return 0;
 }

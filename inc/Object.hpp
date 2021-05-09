@@ -1,7 +1,10 @@
-#pragma once
+#ifndef __OBJECT_HPP__
+#define __OBJECT_HPP__
 #include "Matrix.hpp"
-#include "quaternion.hpp"
+#include "Quaternion.hpp"
 #include <iostream>
+#include <string>
+#include <vector>
 /**
  * @brief Collects position, angles and scale of whole object. 
  */
@@ -36,10 +39,6 @@ class Object{
          */
         std::vector<Vector3> points;
    
-        /**
-         * @brief Informations about position of center point, angles and scale
-         */
-        Transform transform;
     public:
         /**
          * @brief Construct a new Object object
@@ -47,6 +46,13 @@ class Object{
          * @param pointNumber how many points is in the reading file
          */
         Object(const std::string name, const std::size_t &pointNumber);
+
+        virtual ~Object();
+        
+        /**
+         * @brief Informations about position of center point, angles and scale
+         */
+        Transform transform;
 
         /**
          * @brief Acces function for name of Object
@@ -92,7 +98,7 @@ class Object{
          * @param times how many rotate Object
          * @param v Vector3 of axis rotation
          */
-        virtual void Rotate(const double &angle, const double &times; const Vector3 &v);
+        virtual void Rotate(const double &angle, const std::size_t &times, const Vector3 &v);
 };
 
 
@@ -112,3 +118,5 @@ std::istream &operator>>(std::istream &strm, Object &object);
  * @return std::ostream& 
  */
 std::ostream &operator<<(std::ostream &strm, const Object &object);
+
+#endif // __OBJECT_HPP__

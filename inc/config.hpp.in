@@ -10,3 +10,25 @@
 #define PROJECT_VERSION_MINOR @PROJECT_VERSION_MINOR@
 #define PROJECT_VERSION_PATCH @PROJECT_VERSION_PATCH@
 #define PROJECT_VERSION_TWEAK @PROJECT_VERSION_TWEAK@
+
+#define DATA_FOLDER "./dat/"
+#define DATA_TEST_FOLDER "../dat/"
+#define TMP_FOLDER "./tmp/"
+#define TMP_TEST_FOLDER "../tmp/"
+
+// Delta time in seconds, to print GnuPlot
+#define dt 0.03
+
+// Gravity Force
+#define GRAVITY 0.0
+
+// GnuPlot Windows scale
+#define WINDOW_SCALE 3
+
+// Resistance of air
+#define RESISTANSE 0.5
+
+// Translate Time
+#define FORCE_IMPULSE_TIME 0.002
+
+#define FRICTION_COEFFICIENT 0.6

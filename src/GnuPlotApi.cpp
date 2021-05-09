@@ -5,14 +5,14 @@
 #include <iostream>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <fcntl.h>
+#include <fcntl.h>   
 #include <sstream>
 
 #ifdef __GNUG__
 #pragma implementation
 #endif
 
-#include "GnuPlotApi.hh"
+#include "GnuPlotApi.hpp"
 
 using namespace std;
 

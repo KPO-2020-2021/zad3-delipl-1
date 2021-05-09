@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "Menu.hpp"
 #include <iostream>
 
 
@@ -9,17 +9,14 @@ Menu::Menu(std::initializer_list<std::pair<std::string, std::function<void(void)
 
 
 std::ostream &operator<<(std::ostream &cout, const Menu &menu){
-    std::size_t i = 0;
+    std::size_t i = -1;
     cout << std::endl;
-    for(auto &optionName: menu.options){
-        ++i;
-        cout << i << ". " << optionName.first << std::endl; 
-        
-    }
+    for(auto &optionName: menu.options)
+        cout << ++i << ". " << optionName.first << std::endl; 
+
     return cout;
 }
 std::istream &operator>>(std::istream &cin, const Menu &menu){
-
     std::size_t i = 0;
     cin >> i; 
     if(!cin)

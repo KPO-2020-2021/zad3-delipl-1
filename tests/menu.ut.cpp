@@ -1,8 +1,7 @@
-#ifndef TESTRUNNER_CPP
-    #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-    #include "doctest.h"
-#endif
-#include "Menu.h"
+#include "doctest.h"
+#include <iostream>
+#include <sstream>
+#include "Menu.hpp"
 void Foo(){
     std::cout << "Hejka!" << std::endl;
 }
